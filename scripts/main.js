@@ -1,4 +1,6 @@
-// alert("hello");
+
+
+const myLibrary = [];
 
 function Book(title, author, pages, isRead) {
         this.title = title;
@@ -17,4 +19,4 @@ const book3 = new Book("Sieglinde vom Chor", "Sieglinde", 130, "not read yet");
 
 console.log(book1.info());
 console.log(book2.info());
-console.log(book3.info();
+console.log(book3.info());
