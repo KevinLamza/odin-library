@@ -16,6 +16,10 @@ const book1 = new Book("Vom Junkie zum Millionär", "Montana Black", 420, "not r
 const book2 = new Book("Flinker Hase", "Carsten", 240, "read");
 const book3 = new Book("Sieglinde vom Chor", "Sieglinde", 130, "not read yet");
 
+function addBookToLibrary(book) {
+        myLibrary.push(book);
+}
+
 
 console.log(book1.info());
 console.log(book2.info());
