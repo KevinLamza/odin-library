@@ -31,6 +31,10 @@ function displayBook(item) {
         textDeleteButton = document.createTextNode("Delete");
         deleteButton.appendChild(textDeleteButton);
         node.appendChild(deleteButton);
+        //add event listener for delete button
+        deleteButton.addEventListener("click", () => {
+                alert(item.title);
+        });
         //append node
         document.querySelector(".myLibrary").appendChild(node);
         updateIndexes();
