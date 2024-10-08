@@ -22,11 +22,31 @@ function addBookToLibrary(book) {
 }
 
 function displayBook(item) {
+        //list item
         node = document.createElement("li");
         textNode = document.createTextNode(item.info());
         node.appendChild(textNode);
-        console.log(document.querySelector(".myLibrary"));
+        //delete button
+        deleteButton = document.createElement("button");
+        textDeleteButton = document.createTextNode("Delete");
+        deleteButton.appendChild(textDeleteButton);
+        node.appendChild(deleteButton);
+        //append node
         document.querySelector(".myLibrary").appendChild(node);
+        updateIndexes();
+        console.log(node);
+}
+
+function updateIndexes() {
+        const nodeList = document.querySelectorAll("li");
+        for (let i = 0; i < nodeList.length; i++) {
+                nodeList[i].setAttribute("library-index", i);
+        }
+        const nodeButtonList = document.querySelectorAll("li button");
+        for (let i = 0; i < nodeButtonList.length; i++) {
+                nodeButtonList[i].setAttribute("library-index", i);
+                nodeButtonList[i].setAttribute("class", "deleteButton");
+        }
 }
 
 // PRE-ADD THREE BOOKS TO LIBRARY
@@ -65,12 +85,15 @@ submitButton.addEventListener("click", () => {
         array = [];
         array[0] = newBook;
         array.forEach(displayBook);
+        updateIndexes();
         dialog.close();
+        document.querySelector("form").reset();
 });
 
 
 // 5 button on each list item to remove the book again
 // You will need to associate your DOM elements with the actual book objects in some way. 
 // One easy solution is giving them a data-attribute that corresponds to the index of the library array.
+// document.getElementById("myH1").setAttribute("class", "democlass"); 
 
 // 6 toggle read status with button
