@@ -1,64 +1,66 @@
 
-// BOOK AND LIBRARY DATA
-const myLibrary = [];
 
+// Constructor to make it easily add new book objects
 function Book(title, author, pages, isRead) {
-        this.title = title;
-        this.author = author;
-        this.pages = pages;
-        this.isRead = isRead;
-        this.info = function () {
-                // return (`${this.title} by ${this.author}, ${this.pages} pages, ${this.isRead}.`);
-                return (`${this.title} by ${this.author}, ${this.pages} pages`);
-        };
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.isRead = isRead;
+    this.info = function () {
+            // return (`${this.title} by ${this.author}, ${this.pages} pages, ${this.isRead}.`);
+            return (`${this.title} by ${this.author}, ${this.pages} pages`);
+    };
 }
-
-const book1 = new Book("Vom Junkie zum Millionär", "Montana Black", 420, "not read yet");
-const book2 = new Book("Flinker Hase", "Carsten", 240, "read");
-const book3 = new Book("Sieglinde vom Chor", "Sieglinde", 130, "not read yet");
 
 function addBookToLibrary(book) {
-        myLibrary.push(book);
+    myLibrary.push(book);
 }
 
-function displayBook(item) {
-        //list item
-        node = document.createElement("li");
-        textNode = document.createTextNode(item.info());
-        node.appendChild(textNode);
-        //delete button
-        deleteButton = document.createElement("button");
-        textDeleteButton = document.createTextNode("Delete");
-        deleteButton.appendChild(textDeleteButton);
-        node.appendChild(deleteButton);
-        //add event listener for delete button
-        deleteButton.addEventListener("click", () => {
-                alert(item.title);
-        });
-        //append node
-        document.querySelector(".myLibrary").appendChild(node);
-        updateIndexes();
-        console.log(node);
+function drawInitialList(myLibrary) {
+    for (let i = 0; i < myLibrary.length; i++) {
+        listNode = drawListElements(myLibrary[i], i);
+        buttonNode = drawDeleteButtons(listNode);
+        addButtonLogic(myLibrary, i, buttonNode);
+    }
 }
 
-function updateIndexes() {
-        const nodeList = document.querySelectorAll("li");
-        for (let i = 0; i < nodeList.length; i++) {
-                nodeList[i].setAttribute("library-index", i);
+function drawListElements(item, i) {
+    node = document.createElement("li");
+    textNode = document.createTextNode(item.info());
+    node.appendChild(textNode);
+    node.setAttribute("id", i);
+    document.querySelector(".myLibrary").appendChild(node);
+    return node;
+}
+
+function drawDeleteButtons(item) {
+    deleteButton = document.createElement("button");
+    textDeleteButton = document.createTextNode("Delete");
+    deleteButton.appendChild(textDeleteButton);
+    deleteButton.setAttribute("class", "deleteButton");
+    item.appendChild(deleteButton);
+    return item;
+}
+
+function addButtonLogic(myLibrary, i, node) {
+    node.addEventListener("click", () => {
+        myLibrary.splice(i, 1);
+        node.remove();
+        nodeList = document.querySelectorAll("li");
+        console.log(nodeList.length);
+        console.log(myLibrary);
+        for (let j = 0; j < nodeList.length; j++) {
+            nodeList[j].setAttribute("id", j);
         }
-        const nodeButtonList = document.querySelectorAll("li button");
-        for (let i = 0; i < nodeButtonList.length; i++) {
-                nodeButtonList[i].setAttribute("library-index", i);
-                nodeButtonList[i].setAttribute("class", "deleteButton");
-        }
+    })
 }
 
-// PRE-ADD THREE BOOKS TO LIBRARY
-addBookToLibrary(book1);
-addBookToLibrary(book2);
-addBookToLibrary(book3);
+function addBookToList(newBook) {
+    listNode = drawListElements(newBook, myLibrary.length - 1);
+    buttonNode = drawDeleteButtons(listNode);
+    addButtonLogic(myLibrary, myLibrary.length - 1, buttonNode);
+}
 
-myLibrary.forEach(displayBook)
 
 // EVENT LISTENER LOGIC FOR FORM BUTTONS TO ADD MORE BOOKS
 const dialog = document.querySelector("dialog");
@@ -79,25 +81,28 @@ submitButton.addEventListener("click", () => {
         title = document.getElementById('title').value;
         author = document.getElementById('author').value;
         pages = document.getElementById('pages').value;
-        if(document.getElementById('read').checked) {
-                readStatus = "read";
-        }else if(document.getElementById('notRead').checked) {
-                readStatus = "not read yet";
+        if (document.getElementById('read').checked) {
+            readStatus = "read";
+        } else if(document.getElementById('notRead').checked) {
+            readStatus = "not read yet";
         }
         newBook = new Book(title, author, pages, readStatus);
-        myLibrary.push(newBook);
-        array = [];
-        array[0] = newBook;
-        array.forEach(displayBook);
-        updateIndexes();
+        addBookToLibrary(newBook);
+        addBookToList(newBook);
         dialog.close();
         document.querySelector("form").reset();
 });
 
+// Array, which will contain all book objects
+myLibrary = [];
 
-// 5 button on each list item to remove the book again
-// You will need to associate your DOM elements with the actual book objects in some way. 
-// One easy solution is giving them a data-attribute that corresponds to the index of the library array.
-// document.getElementById("myH1").setAttribute("class", "democlass"); 
+// Specification asked for a couple of example books already pre-defined on page startup
+const book1 = new Book("Vom Junkie zum Millionär", "Montana Black", 420, "not read yet");
+const book2 = new Book("Flinker Hase", "Carsten", 240, "read");
+const book3 = new Book("Sieglinde vom Chor", "Sieglinde", 130, "not read yet");
 
-// 6 toggle read status with button
+addBookToLibrary(book1);
+addBookToLibrary(book2);
+addBookToLibrary(book3);
+
+drawInitialList(myLibrary);

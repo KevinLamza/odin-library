@@ -1,0 +1,12 @@
+#cancel, #submit {
+    margin-top: 20px;
+}
+
+.container input {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.deleteButton {
+    margin-left: 10px;
+}
