@@ -1,5 +1,5 @@
 
-
+// BOOK AND LIBRARY DATA
 const myLibrary = [];
 
 function Book(title, author, pages, isRead) {
@@ -29,12 +29,14 @@ function displayBook(item) {
         document.querySelector(".myLibrary").appendChild(node);
 }
 
+// PRE-ADD THREE BOOKS TO LIBRARY
 addBookToLibrary(book1);
 addBookToLibrary(book2);
 addBookToLibrary(book3);
 
 myLibrary.forEach(displayBook)
 
+// EVENT LISTENER LOGIC FOR FORM BUTTONS TO ADD MORE BOOKS
 const dialog = document.querySelector("dialog");
 const cancelButton = document.querySelector("#cancel");
 const submitButton = document.querySelector("#submit");
@@ -67,8 +69,8 @@ submitButton.addEventListener("click", () => {
 });
 
 
-console.log(myLibrary);
-
 // 5 button on each list item to remove the book again
+// You will need to associate your DOM elements with the actual book objects in some way. 
+// One easy solution is giving them a data-attribute that corresponds to the index of the library array.
 
 // 6 toggle read status with button
