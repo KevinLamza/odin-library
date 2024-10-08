@@ -7,6 +7,6 @@
     margin-bottom: 5px;
 }
 
-.deleteButton {
+.deleteButton, .readStatusButton {
     margin-left: 10px;
 }

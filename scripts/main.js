@@ -7,9 +7,16 @@ function Book(title, author, pages, isRead) {
     this.pages = pages;
     this.isRead = isRead;
     this.info = function () {
-            // return (`${this.title} by ${this.author}, ${this.pages} pages, ${this.isRead}.`);
-            return (`${this.title} by ${this.author}, ${this.pages} pages`);
+        // return (`${this.title} by ${this.author}, ${this.pages} pages, ${this.isRead}.`);
+        return (`${this.title} by ${this.author}, ${this.pages} pages, ${this.isRead}.`);
     };
+    this.toggleReadStatus = function () {
+        if (this.isRead === "read") {
+            this.isRead = "not read yet";
+        } else if (this.isRead === "not read yet") {
+            this.isRead = "read";
+        }
+    }
 }
 
 function addBookToLibrary(book) {
@@ -18,8 +25,10 @@ function addBookToLibrary(book) {
 
 function drawInitialList(myLibrary) {
     for (let i = 0; i < myLibrary.length; i++) {
-        listNode = drawListElements(myLibrary[i], i);
-        buttonNode = drawDeleteButtons(listNode);
+        liNode = drawListElements(myLibrary[i], i);
+        readStatusButton = drawToggleReadStatus(liNode);
+        addReadStatusLogic(myLibrary, i, readStatusButton);
+        buttonNode = drawDeleteButtons(liNode);
         addButtonLogic(myLibrary, i, buttonNode);
     }
 }
@@ -39,24 +48,45 @@ function drawDeleteButtons(item) {
     deleteButton.appendChild(textDeleteButton);
     deleteButton.setAttribute("class", "deleteButton");
     item.appendChild(deleteButton);
-    return item;
+    return deleteButton;
 }
 
 function addButtonLogic(myLibrary, i, node) {
     node.addEventListener("click", () => {
         myLibrary.splice(i, 1);
-        node.remove();
+        node.parentNode.remove();
         nodeList = document.querySelectorAll("li");
-        console.log(nodeList.length);
-        console.log(myLibrary);
         for (let j = 0; j < nodeList.length; j++) {
             nodeList[j].setAttribute("id", j);
         }
     })
 }
 
+function drawToggleReadStatus(item) {
+    readStatusButton = document.createElement("button");
+    textReadStatusButton = document.createTextNode("Toggle read status");
+    readStatusButton.appendChild(textReadStatusButton);
+    readStatusButton.setAttribute("class", "readStatusButton");
+    item.appendChild(readStatusButton);
+    return readStatusButton;
+}
+
+function addReadStatusLogic(myLibrary, i, node) {
+    node.addEventListener("click", () => {
+        x = node.parentNode.getAttribute("id");
+        myLibrary[x].toggleReadStatus();
+        console.log(node);
+        console.log(node.parentNode.firstChild);
+        newTextNode = document.createTextNode(myLibrary[x].info());
+        node.parentNode.replaceChild(newTextNode, node.parentNode.firstChild);
+        }
+    )
+}
+
 function addBookToList(newBook) {
     listNode = drawListElements(newBook, myLibrary.length - 1);
+    readStatusButton = drawToggleReadStatus(listNode);
+    addReadStatusLogic(myLibrary, myLibrary.length - 1, readStatusButton);
     buttonNode = drawDeleteButtons(listNode);
     addButtonLogic(myLibrary, myLibrary.length - 1, buttonNode);
 }
@@ -69,28 +99,28 @@ const submitButton = document.querySelector("#submit");
 const addButton = document.querySelector("#add");
 
 addButton.addEventListener("click", () => {
-        dialog.showModal();
+    dialog.showModal();
 });
 
 cancelButton.addEventListener("click", () => {
-        dialog.close();
+    dialog.close();
 });
 
 submitButton.addEventListener("click", () => {
-        event.preventDefault();
-        title = document.getElementById('title').value;
-        author = document.getElementById('author').value;
-        pages = document.getElementById('pages').value;
-        if (document.getElementById('read').checked) {
-            readStatus = "read";
-        } else if(document.getElementById('notRead').checked) {
-            readStatus = "not read yet";
-        }
-        newBook = new Book(title, author, pages, readStatus);
-        addBookToLibrary(newBook);
-        addBookToList(newBook);
-        dialog.close();
-        document.querySelector("form").reset();
+    event.preventDefault();
+    title = document.getElementById('title').value;
+    author = document.getElementById('author').value;
+    pages = document.getElementById('pages').value;
+    if (document.getElementById('read').checked) {
+        readStatus = "read";
+    } else if(document.getElementById('notRead').checked) {
+        readStatus = "not read yet";
+    }
+    newBook = new Book(title, author, pages, readStatus);
+    addBookToLibrary(newBook);
+    addBookToList(newBook);
+    dialog.close();
+    document.querySelector("form").reset();
 });
 
 // Array, which will contain all book objects
