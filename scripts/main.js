@@ -17,20 +17,6 @@ const book1 = new Book("Vom Junkie zum Millionär", "Montana Black", 420, "not r
 const book2 = new Book("Flinker Hase", "Carsten", 240, "read");
 const book3 = new Book("Sieglinde vom Chor", "Sieglinde", 130, "not read yet");
 
-// console.log(book1.info);
-
-// const logArrayElements = (lol, ski /*, array */) => {
-//         console.log(`a[${ski}] = ${lol}`);
-// };
-
-//       // Notice that index 2 is skipped, since there is no item at
-//       // that position in the array.
-// [2, 5, , 9].forEach(logArrayElements);
-//       // Logs:
-//       // a[0] = 2
-//       // a[1] = 5
-//       // a[3] = 9
-
 function addBookToLibrary(book) {
         myLibrary.push(book);
 }
@@ -54,19 +40,34 @@ const cancelButton = document.querySelector("#cancel");
 const submitButton = document.querySelector("#submit");
 const addButton = document.querySelector("#add");
 
-// "Show the dialog" button opens the dialog modally
 addButton.addEventListener("click", () => {
         dialog.showModal();
 });
 
-      // "Close" button closes the dialog
 cancelButton.addEventListener("click", () => {
         dialog.close();
 });
 
-console.log(myLibrary);
+submitButton.addEventListener("click", () => {
+        event.preventDefault();
+        title = document.getElementById('title').value;
+        author = document.getElementById('author').value;
+        pages = document.getElementById('pages').value;
+        if(document.getElementById('read').checked) {
+                readStatus = "read";
+        }else if(document.getElementById('notRead').checked) {
+                readStatus = "not read yet";
+        }
+        newBook = new Book(title, author, pages, readStatus);
+        myLibrary.push(newBook);
+        array = [];
+        array[0] = newBook;
+        array.forEach(displayBook);
+        dialog.close();
+});
 
-// 4 NEW BOOK button that brings up a form to add a book to library
+
+console.log(myLibrary);
 
 // 5 button on each list item to remove the book again
 
