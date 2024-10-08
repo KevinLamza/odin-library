@@ -49,6 +49,21 @@ addBookToLibrary(book3);
 
 myLibrary.forEach(displayBook)
 
+const dialog = document.querySelector("dialog");
+const cancelButton = document.querySelector("#cancel");
+const submitButton = document.querySelector("#submit");
+const addButton = document.querySelector("#add");
+
+// "Show the dialog" button opens the dialog modally
+addButton.addEventListener("click", () => {
+        dialog.showModal();
+});
+
+      // "Close" button closes the dialog
+cancelButton.addEventListener("click", () => {
+        dialog.close();
+});
+
 console.log(myLibrary);
 
 // 4 NEW BOOK button that brings up a form to add a book to library
